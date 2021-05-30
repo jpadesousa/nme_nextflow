@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, Seqera Labs
+ * Copyright 2020-2021, Seqera Labs
  * Copyright 2013-2019, Centre for Genomic Regulation (CRG)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -204,7 +204,7 @@ class ScriptRunnerTest extends Specification {
         def script = '''
             process test {
                 script:
-                "$HELLO"
+                "echo $HELLO"
             }
 
             '''
@@ -572,7 +572,7 @@ class ScriptRunnerTest extends Specification {
             process taskHello {
                 maxRetries -1
                 maxErrors -X
-                ''
+                'echo hello'
             }
             '''
         def runner = new TestScriptRunner([executor:'nope'])

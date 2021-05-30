@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, Seqera Labs
+ * Copyright 2020-2021, Seqera Labs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,5 +58,14 @@ class Plugins {
 
     static void pull(List<String> ids) {
         INSTANCE.pullPlugins(ids)
+    }
+
+    static boolean startIfMissing(String pluginId) {
+        if( INSTANCE ) {
+            return INSTANCE.startIfMissing(pluginId)
+        } else {
+            log.debug "Plugins subsystem not available - Ignoring installIfMissing('$pluginId')"
+            return false
+        }
     }
 }

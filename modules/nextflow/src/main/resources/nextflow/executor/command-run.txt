@@ -1,5 +1,5 @@
 ##
-##  Copyright 2020, Seqera Labs
+##  Copyright 2020-2021, Seqera Labs
 ##  Copyright 2013-2019, Centre for Genomic Regulation (CRG)
 ##
 ##  Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +24,10 @@ NXF_ENTRY=${1:-nxf_main}
 {{trace_script}}
 {{helpers_script}}
 {{container_env}}
+
+nxf_sleep() {
+  sleep $1 2>/dev/null || sleep 1;
+}
 
 nxf_date() {
     ## should return the current timestamp in milliseconds

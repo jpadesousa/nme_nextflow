@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, Seqera Labs
+ * Copyright 2020-2021, Seqera Labs
  * Copyright 2013-2019, Centre for Genomic Regulation (CRG)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -113,7 +113,7 @@ class ScriptMeta {
     }
 
     /*
-     * This method invocation is inject by the NF AST transformer to pass
+     * This method invocation is made by the NF AST transformer to pass
      * the process names declared in the workflow script. This is only required
      * for DSL1 script.
      *

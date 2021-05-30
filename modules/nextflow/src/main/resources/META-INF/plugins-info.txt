@@ -1,7 +1,7 @@
-nf-amazon@1.0.1
-nf-console@1.0.1
-nf-google@1.0.1
-nf-ignite@1.2.1
-nf-azure@0.9.0
-nf-tower@1.0.1
-nf-ga4gh@1.0.1
+nf-amazon@1.0.8
+nf-console@1.0.3
+nf-google@1.0.4
+nf-ignite@1.2.3
+nf-azure@0.9.8
+nf-tower@1.1.1
+nf-ga4gh@1.0.3

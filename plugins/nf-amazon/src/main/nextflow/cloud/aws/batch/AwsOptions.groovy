@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, Seqera Labs
+ * Copyright 2020-2021, Seqera Labs
  * Copyright 2013-2019, Centre for Genomic Regulation (CRG)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,6 +37,8 @@ import nextflow.util.Duration
 @CompileStatic
 class AwsOptions implements CloudTransferOptions {
 
+    static final List<String> VALID_RETRY_MODES = ['legacy','standard','adaptive']
+
     String cliPath
 
     String storageClass
@@ -53,6 +55,8 @@ class AwsOptions implements CloudTransferOptions {
 
     Duration delayBetweenAttempts = DEFAULT_DELAY_BETWEEN_ATTEMPTS
 
+    String retryMode
+
     volatile Boolean fetchInstanceType
 
     /**
@@ -65,6 +69,9 @@ class AwsOptions implements CloudTransferOptions {
      */
     List<String> volumes
 
+    /**
+     * @return A list of volume mounts using the docker cli convention ie. `/some/path` or `/some/path:/container/path` or `/some/path:/container/path:ro`
+     */
     List<String> getVolumes() { volumes != null ? Collections.unmodifiableList(volumes) : Collections.<String>emptyList() }
 
     /* Only for testing purpose */
@@ -86,6 +93,9 @@ class AwsOptions implements CloudTransferOptions {
         volumes = makeVols(session.config.navigate('aws.batch.volumes'))
         jobRole = session.config.navigate('aws.batch.jobRole')
         fetchInstanceType = session.config.navigate('aws.batch.fetchInstanceType')
+        retryMode = session.config.navigate('aws.batch.retryMode')
+        if( retryMode && retryMode !in VALID_RETRY_MODES )
+            log.warn "Unexpected value for 'aws.batch.retryMode' config setting - offending value: $retryMode - valid values: ${VALID_RETRY_MODES.join(',')}"
         if( fetchInstanceType==null )
             fetchInstanceType = session.config.navigate('tower.enabled',false)
     }

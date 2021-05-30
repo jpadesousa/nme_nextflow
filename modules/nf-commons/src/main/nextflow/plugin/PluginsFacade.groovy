@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, Seqera Labs
+ * Copyright 2020-2021, Seqera Labs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import nextflow.extension.FilesEx
 import nextflow.util.CacheHelper
 import org.pf4j.DefaultPluginManager
 import org.pf4j.PluginManager
+import org.pf4j.PluginState
 import org.pf4j.PluginStateEvent
 import org.pf4j.PluginStateListener
 /**
@@ -187,22 +188,50 @@ class PluginsFacade implements PluginStateListener {
     }
 
     void start( String pluginId ) {
-         start( defaultPlugins.getPlugin(pluginId) )
+        if( isSelfContained() ) {
+            log.debug "Plugin 'start' is not required in self-contained mode -- ignoring it for plugin: $pluginId"
+            return
+        }
+
+        start( defaultPlugins.getPlugin(pluginId) )
     }
 
     void start(PluginSpec plugin) {
+        if( isSelfContained() ) {
+            log.debug "Plugin 'start' is not required in self-contained mode -- ignoring it for plugin: $plugin.id"
+            return
+        }
+
         updater.prepareAndStart(plugin.id, plugin.version)
     }
 
     void start(List<PluginSpec> specs) {
+        if( isSelfContained() ) {
+            log.debug "Plugin 'start' is not required in self-contained mode -- ignoring it for plugins: $specs"
+            return
+        }
+
         for( PluginSpec it : specs ) {
             start(it)
         }
     }
 
+    boolean isStarted(String pluginId) {
+        manager.getPlugin(pluginId)?.pluginState == PluginState.STARTED
+    }
+
+    /**
+     * @return {@code true} when running in self-contained mode ie. the nextflow distribution
+     * include also plugin libraries. When running is this mode, plugins should not be started
+     * and cannot be updated. 
+     */
+    protected boolean isSelfContained() {
+        return env.get('NXF_PACK')=='all'
+    }
+
     protected List<PluginSpec> pluginsRequirement(Map config) {
         def specs = parseConf(config)
-        if( env.get('NXF_PACK')=='all' && specs ) {
+        if( isSelfContained() && specs ) {
             // custom plugins are not allowed for nextflow self-contained package
             log.warn "Nextflow self-contained distribution only allows default plugins -- User config plugins will be ignored: ${specs.join(',')}"
             return Collections.emptyList()
@@ -227,6 +256,8 @@ class PluginsFacade implements PluginStateListener {
         // retrieve the list from the env var
         final commaSepList = env.get('NXF_PLUGINS_DEFAULT')
         if( commaSepList && commaSepList !in ['true','false'] ) {
+            // if the plugin id in the list does *not* contain the @version suffix, it picks the version
+            // specified in the defaults list. Otherwise parse the provider id@version string to the corresponding spec
             return commaSepList
                     .tokenize(',')
                     .collect( it-> defaultPlugins.hasPlugin(it) ? defaultPlugins.getPlugin(it) : PluginSpec.parse(it) )
@@ -273,4 +304,18 @@ class PluginsFacade implements PluginStateListener {
         updater.pullPlugins(ids)
     }
 
+    boolean startIfMissing(String pluginId) {
+        if( env.NXF_PLUGINS_DEFAULT == 'false' )
+            return false
+
+        if( isStarted(pluginId) )
+            return false
+
+        synchronized (this) {
+            if( isStarted(pluginId) )
+                return false
+            start(pluginId)
+            return true
+        }
+    }
 }

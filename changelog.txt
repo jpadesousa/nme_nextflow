@@ -1,5 +1,88 @@
 NEXTFLOW CHANGE-LOG
 ===================
+21.05.0-edge - 28 May 2021
+- Add support for using mamba with conda (#2030) [10c8385b]
+- Add AWS cli native error fail-over [fd7670ef]
+- Add support for Container Registry to Az Batch executor (#2078) [12bf2da6]
+- Add support for Tower workspace  (#2097) [8a4dd3ab]
+- Add support custom service account email in Google Cloud LifeSciences executor (#2044) [a642c9ea]
+- Add support for Java 16 + Gradle 7 [caace1c5] [e2dd4510] [74e466e0] [1245ab1c] [bfc69fb6]
+- Improve tower client error reporting [4efb6bf6]
+- Fix Plugin install lock file is not deleted #2103 [b7fdffac]
+- Fix Use caller runs policy of default thread pool #2021 [48b4e8ee]
+- Fix Error reporting for malformed config [68e5ca18]
+- Decrease max par transfers to 4 [c7ea816a]
+- Prevent fetching aws instance type when missing container id [f5f96049]
+- Use default opts for trace file creation [d8ae94bf]
+- Improve Azure Batch executor error code and messages for failed Tasks (#2099) [1d5fa5d5]
+- Bump groovy 3.0.8 [aa695e12]
+- Bump snakeyaml@1.28 [8d361954]
+
+21.04.1 [stable] - 14 May 2021
+- Fix nested params file parse #2091
+- Fix Malformed config error reporting #2105
+- Fix Use default opts for trace file creation [09e6c6ac]
+
+21.04.0 [stable] - 2 May 2021
+- Fix NPE when AWS Batch job container is not returned [412b6fde]
+- Fix execution hang when native task fail to submit #2060 [1253485d]
+- Update preview message [e1eebdcd]
+- Fix nf-ignite all packaging [72b6a428]
+- Fix GS failing tests [be4f91e9]
+- Fix AWS batch executor fails when using self-contained distribution #2058 [2e344c18]
+- Fix groupTuple sort criteria with closure #2020 [28a579a9]
+- Patch invalid double number cli parsing #2039 [4de4670c] [dcadaaeb]
+- Update sphinx_rtd_theme 0.5.2 [4a165f43]
+- Disable cpus option when running docker with legacy opt [1a7854a5]
+
+21.04.0-edge - 8 Apr 2021
+- Add readOnly flag to k8s volume mounts (#2013) [33bd24ac]
+- Add Start default plugins on-demand #1964 [cf2a9d73]
+- Add support for tower workspaceId [e2977688]
+- Improve suppor for BitBucket server repos [eb946e27]
+- Fix toInt/Long/Float/Double operator hangs with value channel [7c35d985]
+- Fix regression caused by nested params handling #1923 [b25af49b]
+- Fix Cache invalidation when repo is cloned between runs #1989 [ac526f38]
+- Fix Invalid setting of TMP var with singularity #1997 [23f80121] [472cfbdd]
+- Fix issue overriding nested params from cli #1923  [cfe6b1d1]
+- Fix az path handling curly brackets globs #1969 [c78a1bbf]
+- Fix Missing git credentials when checking last commit id [f101308e]
+- Fix plugins version check against local installation [535c2bb5]
+- Fix local dependant formatting #1962 [2a5cbac1]
+- Fix Encode path parameter at GitLab getContentUrl [6f80f651]
+- Fix Only use sudo rm with docker #1956 [f9490423]
+- Prevent AZ NPE when missing vmtype + better logging #1992 [711362ca]
+- Refactor params file var binding #1860 #1972 [330f044a]
+- Prevent jobs names longer than 100 chars OAR exec [6daa21b9]
+- Bump nf-azure@0.9.6 + nf-amazon@1.0.3 [aff1d355]
+- Bump nf-amazon@1.0.3 - s3fs@1.0.9 - solve #1830 [b3b221c1]
+- Bump nf-tower@1.1.0 [29fdd9f7]
+- Bump nf-amazon@1.0.4 + nxf-s3fs@1.1.0 [c638af80]
+- Bump nf-azure@0.9.7 [07c59946]
+
+21.03.0-edge - 5 Mar 2021
+- Add support for serializable ValueObject [8dfaadf3]
+- Add abilitity to fetch revisioned git assets 
+- Add support for FixOwnership to AWS batch [24f83741]
+- Add support for custom network to GLS #1810 [171f4aa8]
+- Add ability to handle list of az vm types [00ced0b3]
+- Add tower config scope to docs #1890 f2bd96fa
+- Add charliecloud container environment from file (#1909) 4553648b
+- Add azcopy tool install mode opts [9e9337d3]
+- Update Az default vm type to Standard_D4_v3 [4c6e76b6]
+- Update NF console dependency [a2d06e15]
+- Remove CDN from timeline reports and make them offline readable #1927 [c0e5a941]
+- Fix plugins install failing in some file systems #1882 [8cc43391]
+- Fix catch failing commands in nxf_parallel #1884 [dd56f6c1]
+- Fix missing error on empty process script [3607f84e]
+- Fix GSL path de-serialization issue [c6cf784f]
+- Fix Memory unit cannot be a negative number #1902 [abd1c9d9]
+- Fix pod spec labels to start with numbers in addition to alphas [79740edf]
+- Fix OAR executor log files #1761 [6f2ff4e4]
+- Fix issue cause by sleep with subsecond argument [c4be8d00] [63974ac6]
+- Fix az blob storage SAS permissions [18a33213]
+- Fix sort human-readable tasks in report [6d68f28d]
+
 21.02.0-edge - 1 Feb 2021
 - Fix Issue when merging nested cli params  #1856 [275e54c4] [fe37da6d]
 - Fix job status detection on PBS pro #1840 [c1598908]

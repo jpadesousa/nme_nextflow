@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, Seqera Labs
+ * Copyright 2020-2021, Seqera Labs
  * Copyright 2013-2019, Centre for Genomic Regulation (CRG)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -665,8 +665,12 @@ class TaskRun implements Cloneable {
             throw e
         }
         catch( Throwable e ) {
-            throw new ProcessUnrecoverableException("Process `$name` script contains error(s)", e)
+            throw new ProcessUnrecoverableException("Process `${getName()}` script contains error(s)", e)
         }
+
+        // make sure the task script is not empty
+        if( !script )
+            throw new ProcessUnrecoverableException("Process `${getName()}` script is empty")
     }
 
     @PackageScope void resolve(TaskClosure block) {
